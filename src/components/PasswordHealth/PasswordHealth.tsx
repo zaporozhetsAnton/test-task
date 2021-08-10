@@ -1,14 +1,17 @@
-import List from './components/List/List';
-import useItemsProvider from './useItemsProvider';
-import ErrorBlock from '../ErrorBlock';
-import Filter from './components/Filter/Filter';
-import LoadingScreen from '../LoadingScreen';
-import Header from './components/Header/Header';
-import {Route, Switch} from "react-router-dom";
+import {Route, Switch} from 'react-router-dom';
+
 import {Routes} from '~/constants';
-import itemHasWeakPassword from "~/utils/itemHasWeakPassword";
-import itemHasReusedPassword from "~/utils/itemHasReusedPassword";
-import { useUserContext } from '../UserContext';
+import itemHasWeakPassword from '~/utils/itemHasWeakPassword';
+import itemHasReusedPassword from '~/utils/itemHasReusedPassword';
+import itemIsOlderThanThirtyDays from '~/utils/itemIsOlderThanThirtyDays';
+import { useUserContext } from '~/components/UserContext';
+import ErrorBlock from '~/components/ErrorBlock';
+import LoadingScreen from '~/components/LoadingScreen';
+import List from './components/List/List';
+
+import useItemsProvider from './useItemsProvider';
+import Header from './components/Header/Header';
+import Filter from './components/Filter/Filter';
 
 const PasswordHealth = () => {
   const {
@@ -21,6 +24,7 @@ const PasswordHealth = () => {
     items,
     isLoading,
     errorMessage,
+    updateItemsList,
   } = useItemsProvider();
 
   if (isLoading || userDataIsLoading) {
@@ -37,13 +41,16 @@ const PasswordHealth = () => {
       <Filter items={items}/>
       <Switch>
         <Route exact path={Routes.PasswordHealth}>
-          <List items={items}/>
+          <List items={items} updateItemsList={updateItemsList} />
         </Route>
         <Route path={Routes.Weak}>
-          <List items={items.filter(itemHasWeakPassword)}/>
+          <List items={items.filter(itemHasWeakPassword)} updateItemsList={updateItemsList} />
         </Route>
         <Route path={Routes.Reused}>
-          <List items={items.filter((item) => itemHasReusedPassword(item, items))}/>
+          <List items={items.filter((item) => itemHasReusedPassword(item, items))} updateItemsList={updateItemsList} />
+        </Route>
+        <Route path={Routes.Old}>
+          <List items={items.filter(itemIsOlderThanThirtyDays)} updateItemsList={updateItemsList} />
         </Route>
       </Switch>
     </div>

@@ -17,16 +17,17 @@ router.post('/api/items', authentication, (req, res) => {
     res.status(400).send('mandatory parameter is missing');
     return;
   }
-  
-  updateItem({
+  const updatedItem = {
     id,
     title,
     description,
     password,
     createdAt: new Date().toDateString(),
-  })
+  };
 
-  res.status(200).send();
+  updateItem(updatedItem);
+
+  res.status(200).json(updatedItem);
 });
 
 export default router;

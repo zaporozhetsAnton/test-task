@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { API } from '~/constants';
-import getUrl from '~/utils/getUrl';
+
+import getUser from "~/services/getUser";
 
 interface IUser {
   updateUser: () => void;
@@ -36,14 +36,7 @@ export const UserContextProvider = ({ children }) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(getUrl(API.User), {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        }
-      });
-
-      const data = await response.json();
-
+      const data = await getUser();
       setUsername(data?.username);
       setEmail(data?.email);
       setId(data?.id);

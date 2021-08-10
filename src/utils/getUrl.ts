@@ -1,5 +1,6 @@
 import qs from 'query-string';
-import { API } from '../constants';
+
+import { API } from '~/constants';
 
 const getUrl = (endpoint: API, params?: Record<string, any>) => {
 
