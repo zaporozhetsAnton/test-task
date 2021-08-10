@@ -1,5 +1,6 @@
 import {FC} from 'react';
 import {Route, RouteProps, useHistory} from 'react-router-dom';
+
 import {Routes} from '~/constants';
 
 const PublicRoute: FC<RouteProps> = ({

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import timeout from '../middleware/timeout';
+import authentication from '../middleware/authentication';
 import { users } from '../data';
 import { addToken, removeToken, getTokenOwner, generateToken } from '../services/tokenManager';
 
@@ -32,7 +33,7 @@ router.get('/api/login',timeout, (req, res) => {
 });
 
 // deletes token
-router.get('/api/logout', (req, res) => {
+router.get('/api/logout', authentication, (req, res) => {
   const token = req.headers.authorization?.split(' ')?.[1];
 
   if (token) {
@@ -45,7 +46,7 @@ router.get('/api/logout', (req, res) => {
 });
 
 // return token owner info
-router.get('/api/user', (req, res) => {
+router.get('/api/user', authentication, (req, res) => {
   const token = req.headers.authorization?.split(' ')?.[1];
 
   if (token) {
@@ -55,7 +56,7 @@ router.get('/api/user', (req, res) => {
       const tokenOwner = users.find((user) => (
         user.id === tokenOwnerId
       ));
-  
+
       res.status(200).json({
         id: tokenOwner.id,
         username: tokenOwner.username,
