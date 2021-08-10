@@ -1,19 +1,9 @@
 name: CI
-
-on:
-  push:
-    branches:
-      - '*'
-
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
-      - uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: install
-      - uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: test
+      - run: npm install
+      - run: npm test
